@@ -183,10 +183,11 @@ class ResNet(nn.Module):
                                        dilate=replace_stride_with_dilation[1])
         self.layer4 = self._make_layer(block, 512, layers[3], stride=1,
                                        dilate=replace_stride_with_dilation[2])
-        # self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.no_linear_fc_1 = nn.Linear(512*8*8, 512*4*8)
-        self.no_linear_fc_2 = nn.Linear(512*4*8, 4096)
-        self.fc = nn.Linear(4096 * block.expansion, num_classes)
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.no_linear_fc_1 = nn.Linear(512*8*8, 512*4*2)
+        self.drop_out = nn.Dropout(p=0.2)
+        self.no_linear_fc_2 = nn.Linear(512*4*2, 2048)
+        self.fc = nn.Linear(2048 * block.expansion, num_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -245,6 +246,7 @@ class ResNet(nn.Module):
         x = torch.flatten(x, 1)
 
         x = F.relu(self.no_linear_fc_1(x))
+        x = self.drop_out(x)
         x = F.relu(self.no_linear_fc_2(x))
 
         x = self.fc(x)
