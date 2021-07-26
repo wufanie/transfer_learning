@@ -40,7 +40,7 @@ def cal_all(input, kernel, stride):
 
 
 if __name__ == '__main__':
-    insize, kernel, stride = open_txt('net_params.txt')
+    insize, kernel, stride = open_txt('net_params1.txt')
     for i in range(len(insize) - 1):
         print(cal_all(insize, kernel, stride))
         insize.pop()

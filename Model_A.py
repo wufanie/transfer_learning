@@ -102,8 +102,8 @@ dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4,
                for x in ['train', 'val']}
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 class_names = image_datasets['train'].classes
-torch.cuda.set_device(1)
-device = torch.device("cuda:1")
+torch.cuda.set_device(0)
+device = torch.device("cuda:0")
 
 
 ######################################################################
